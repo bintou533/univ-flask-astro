@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appareils Photo</title>
+</head>
+<body>
+    <h1>Liste des Appareils Photo</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Date de sortie</th>
+                <th>Score</th>
+                <th>Catégorie</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appareil in appareils %}
+                <tr>
+                    <td>{{ appareil.marque }}</td>
+                    <td>{{ appareil.modele }}</td>
+                    <td>{{ appareil.date_sortie }}</td>
+                    <td>{{ appareil.score }}</td>
+                    <td>{{ appareil.categorie }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

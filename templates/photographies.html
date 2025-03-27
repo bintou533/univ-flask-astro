@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photographies</title>
+</head>
+<body>
+    <h1>Liste des Photographies</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Date</th>
+                <th>Photographe</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for photo in photos %}
+                <tr>
+                    <td>{{ photo.titre }}</td>
+                    <td>{{ photo.date }}</td>
+                    <td>{{ photo.photographe }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

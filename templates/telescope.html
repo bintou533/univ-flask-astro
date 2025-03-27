@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Téléscopes</title>
+</head>
+<body>
+    <h1>Liste des Téléscopes</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Date de sortie</th>
+                <th>Score</th>
+                <th>Catégorie</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for telescope in teles %}
+                <tr>
+                    <td>{{ telescope.marque }}</td>
+                    <td>{{ telescope.modele }}</td>
+                    <td>{{ telescope.date_sortie }}</td>
+                    <td>{{ telescope.score }}</td>
+                    <td>{{ telescope.categorie }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
