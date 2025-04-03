@@ -13,9 +13,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
-# Initialiser l'extension Flask-Login
-login_manager = LoginManager(app)
-login_manager.login_view = 'login'  # Nom de la route de la page de login
 
 
 # Fonction de chargement de l'utilisateur
@@ -50,6 +47,7 @@ def register():
 # Route pour la page de connexion
 
 @app.route('/login', methods=['GET', 'POST'])
+
 def login():
     if request.method == 'POST':
         email = request.form['email']
@@ -62,7 +60,6 @@ def login():
             return redirect(next_page or url_for('home'))  
     
     return render_template('login.html', title='Connexion')
-
 
 # Route pour la déconnexion
 @app.route('/logout')
