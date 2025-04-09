@@ -1,33 +1,25 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appareils Photo</title>
-</head>
-<body>
-    <h1>Liste des Appareils Photo</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Marque</th>
-                <th>Modèle</th>
-                <th>Date de sortie</th>
-                <th>Score</th>
-                <th>Catégorie</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for appareil in appareils %}
-                <tr>
-                    <td>{{ appareil.marque }}</td>
-                    <td>{{ appareil.modele }}</td>
-                    <td>{{ appareil.date_sortie }}</td>
-                    <td>{{ appareil.score }}</td>
-                    <td>{{ appareil.categorie }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Appareils Photo{% endblock %}
+
+{% block content %}
+    <h1>Appareils Photo</h1>
+
+    <h2>Amateur</h2>
+    <ul>
+        <li>Marque: Nikon, Modèle: D3500, Date de sortie: 2018, Score: 4/5</li>
+        <li>Marque: Canon, Modèle: EOS 2000D, Date de sortie: 2018, Score: 3/5</li>
+    </ul>
+
+    <h2>Amateur sérieux</h2>
+    <ul>
+        <li>Marque: Sony, Modèle: Alpha 6400, Date de sortie: 2019, Score: 4/5</li>
+        <li>Marque: Fujifilm, Modèle: X-T30 II, Date de sortie: 2021, Score: 5/5</li>
+    </ul>
+
+    <h2>Professionnel</h2>
+    <ul>
+        <li>Marque: Canon, Modèle: EOS R5, Date de sortie: 2020, Score: 5/5</li>
+        <li>Marque: Nikon, Modèle: Z 9, Date de sortie: 2021, Score: 5/5</li>
+    </ul>
+{% endblock %}

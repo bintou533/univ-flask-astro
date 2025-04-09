@@ -1,29 +1,45 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photographies</title>
-</head>
-<body>
-    <h1>Liste des Photographies</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Titre</th>
-                <th>Date</th>
-                <th>Photographe</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for photo in photos %}
-                <tr>
-                    <td>{{ photo.titre }}</td>
-                    <td>{{ photo.date }}</td>
-                    <td>{{ photo.photographe }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Photographies{% endblock %}
+
+{% block content %}
+    <h1>Photographies d'Astronomie</h1>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/nebuleuse.png') }}" class="card-img-top" alt="Nébuleuse d'Orion">
+                <div class="card-body">
+                    <h5 class="card-title">Nébuleuse d'Orion</h5>
+                    <p class="card-text">Une magnifique nébuleuse visible dans la constellation d'Orion.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/galaxie.png') }}" class="card-img-top" alt="Galaxie d'Andromède">
+                <div class="card-body">
+                    <h5 class="card-title">Galaxie d'Andromède</h5>
+                    <p class="card-text">Notre plus grande voisine galactique.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/amas_etoiles.png') }}" class="card-img-top" alt="Amas d'étoiles des Pléiades">
+                <div class="card-body">
+                    <h5 class="card-title">Amas d'étoiles des Pléiades</h5>
+                    <p class="card-text">Un jeune amas d'étoiles brillantes également connu sous le nom des Sept Sœurs.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/image.png') }}" class="card-img-top" alt="Galaxie d'Andromède">
+                <div class="card-body">
+                    <h5 class="card-title">Etoiles</h5>
+                    <p class="card-text">Un univers</p>
+                </div>
+            </div>
+        </div>
+        </div>
+{% endblock %}

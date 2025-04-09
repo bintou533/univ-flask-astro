@@ -1,33 +1,25 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Téléscopes</title>
-</head>
-<body>
-    <h1>Liste des Téléscopes</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Marque</th>
-                <th>Modèle</th>
-                <th>Date de sortie</th>
-                <th>Score</th>
-                <th>Catégorie</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for telescope in teles %}
-                <tr>
-                    <td>{{ telescope.marque }}</td>
-                    <td>{{ telescope.modele }}</td>
-                    <td>{{ telescope.date_sortie }}</td>
-                    <td>{{ telescope.score }}</td>
-                    <td>{{ telescope.categorie }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Téléscopes{% endblock %}
+
+{% block content %}
+    <h1>Téléscopes</h1>
+
+    <h2>Téléscopes pour enfants</h2>
+    <ul>
+        <li>Marque: Celestron, Modèle: FirstScope, Date de sortie: 2010, Score: 3/5</li>
+        <li>Marque: Orion, Modèle: SpaceProbe 76, Date de sortie: 2008, Score: 4/5</li>
+    </ul>
+
+    <h2>Automatisés</h2>
+    <ul>
+        <li>Marque: Sky-Watcher, Modèle: Evostar 150, Date de sortie: 2015, Score: 4/5</li>
+        <li>Marque: Celestron, Modèle: NexStar 6SE, Date de sortie: 2013, Score: 5/5</li>
+    </ul>
+
+    <h2>Téléscopes complets</h2>
+    <ul>
+        <li>Marque: Meade, Modèle: LX600, Date de sortie: 2018, Score: 5/5</li>
+        <li>Marque: Explore Scientific, Modèle: ED127 FCD100, Date de sortie: 2016, Score: 5/5</li>
+    </ul>
+{% endblock %}
