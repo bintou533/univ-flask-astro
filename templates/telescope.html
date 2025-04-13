@@ -22,4 +22,14 @@
         <li>Marque: Meade, Modèle: LX600, Date de sortie: 2018, Score: 5/5</li>
         <li>Marque: Explore Scientific, Modèle: ED127 FCD100, Date de sortie: 2016, Score: 5/5</li>
     </ul>
+    <h2>Liste des Téléscopes</h2>
+    <ul class="list-group">
+        {% for telescope in telescopes %}
+            <li class="list-group-item">
+                {{ telescope.marque }} {{ telescope.modele }}
+                <a href="{{ url_for('telescope_detail', telescope_id=telescope.id) }}" class="btn btn-sm btn-info float-end">Détails</a>
+            </li>
+        {% endfor %}
+       
+   
 {% endblock %}

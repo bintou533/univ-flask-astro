@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ telescope.marque }} {{ telescope.modele }}{% endblock %}
+
+{% block content %}
+    <h2>{{ telescope.marque }} {{ telescope.modele }}</h2>
+    <p><strong>Marque:</strong> {{ telescope.marque }}</p>
+    <p><strong>Modèle:</strong> {{ telescope.modele }}</p>
+    {% if telescope.date_sortie %}
+        <p><strong>Date de sortie:</strong> {{ telescope.date_sortie }}</p>
+    {% endif %}
+    {% if telescope.score %}
+        <p><strong>Score:</strong> {{ telescope.score }}</p>
+    {% endif %}
+    <p><strong>Catégorie:</strong> {{ telescope.categorie }}</p>
+    {% if telescope.resume %}
+        <p><strong>Résumé:</strong></p>
+        <p>{{ telescope.resume|safe }}</p>
+    {% endif %}
+    <a href="{{ url_for('telescopes') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+{% endblock %}

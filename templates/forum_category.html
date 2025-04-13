@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+    <h2>{{ category.name }}</h2>
+    {% if 'user_id' in session %}
+        <p><a href="{{ url_for('new_thread', category_id=category.id) }}" class="btn btn-success">Nouveau fil de discussion</a></p>
+    {% endif %}
+    <ul class="list-group">
+        {% for thread in threads %}
+            <li class="list-group-item">
+                <a href="{{ url_for('forum_thread', thread_id=thread.id) }}">{{ thread.title }}</a>
+                <small class="text-muted">Créé par {{ thread.user.username }} le {{ thread.created_at.strftime('%d/%m/%Y à %H:%M') }}</small>
+            </li>
+        {% else %}
+            <li class="list-group-item">Aucun fil de discussion dans cette catégorie.</li>
+        {% endfor %}
+    </ul>
+    <p><a href="{{ url_for('forum_index') }}" class="btn btn-secondary mt-3">Retour au forum</a></p>
+{% endblock %}

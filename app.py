@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
@@ -29,7 +30,7 @@ class AppareilPhoto(db.Model):
     date_sortie = db.Column(db.String(20))
     score = db.Column(db.Integer)
     categorie = db.Column(db.String(50), nullable=False)
-    resume = db.Column(db.Text)
+    resume = db.Column(db.Text)  # Ajout de la colonne resume
 
     def __repr__(self):
         return f'<AppareilPhoto {self.marque} {self.modele}>'
@@ -41,10 +42,41 @@ class Telecope(db.Model):
     date_sortie = db.Column(db.String(20))
     score = db.Column(db.Integer)
     categorie = db.Column(db.String(50), nullable=False)
-    resume = db.Column(db.Text)
+    resume = db.Column(db.Text)  # Ajout de la colonne resume
 
     def __repr__(self):
         return f'<Telecope {self.marque} {self.modele}>'
+
+class ForumCategory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
+    threads = db.relationship('ForumThread', backref='category', lazy=True)
+
+    def __repr__(self):
+        return f'<ForumCategory {self.name}>'
+
+class ForumThread(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref='forum_threads')
+    posts = db.relationship('ForumPost', backref='thread', lazy=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('forum_category.id'), nullable=False)
+
+    def __repr__(self):
+        return f'<ForumThread {self.title}>'
+
+class ForumPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref='forum_posts')
+    thread_id = db.Column(db.Integer, db.ForeignKey('forum_thread.id'), nullable=False)
+
+    def __repr__(self):
+        return f'<ForumPost {self.content[:50]}...>'
 
 # --- Fonction pour vérifier si l'utilisateur est connecté ---
 def login_required(f):
@@ -56,6 +88,60 @@ def login_required(f):
             return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated_function
+
+# --- Routes pour le forum ---
+@app.route('/forum')
+def forum_index():
+    categories = ForumCategory.query.all()
+    return render_template('forum_index.html', categories=categories)
+
+@app.route('/forum/category/<int:category_id>')
+def forum_category(category_id):
+    category = ForumCategory.query.get_or_404(category_id)
+    threads = ForumThread.query.filter_by(category_id=category_id).order_by(ForumThread.created_at.desc()).all()
+    return render_template('forum_category.html', category=category, threads=threads)
+
+@app.route('/forum/thread/<int:thread_id>')
+def forum_thread(thread_id):
+    thread = ForumThread.query.get_or_404(thread_id)
+    posts = ForumPost.query.filter_by(thread_id=thread_id).order_by(ForumPost.created_at).all()
+    return render_template('forum_thread.html', thread=thread, posts=posts)
+
+@app.route('/forum/new_thread/<int:category_id>', methods=['GET', 'POST'])
+@login_required
+def new_thread(category_id):
+    category = ForumCategory.query.get_or_404(category_id)
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        if not title or not content:
+            flash('Le titre et le contenu sont requis.')
+            return render_template('new_thread.html', category=category)
+        new_thread = ForumThread(title=title, category_id=category_id, user_id=session['user_id'])
+        db.session.add(new_thread)
+        db.session.commit()
+        new_post = ForumPost(content=content, thread_id=new_thread.id, user_id=session['user_id'])
+        db.session.add(new_post)
+        db.session.commit()
+        flash('Nouveau fil de discussion créé!')
+        return redirect(url_for('forum_thread', thread_id=new_thread.id))
+    return render_template('new_thread.html', category=category)
+
+@app.route('/forum/reply/<int:thread_id>', methods=['GET', 'POST'])
+@login_required
+def reply_to_thread(thread_id):
+    thread = ForumThread.query.get_or_404(thread_id)
+    if request.method == 'POST':
+        content = request.form['content']
+        if not content:
+            flash('Le contenu de la réponse est requis.')
+            return render_template('reply_to_thread.html', thread=thread)
+        new_post = ForumPost(content=content, thread_id=thread_id, user_id=session['user_id'])
+        db.session.add(new_post)
+        db.session.commit()
+        flash('Réponse ajoutée!')
+        return redirect(url_for('forum_thread', thread_id=thread_id))
+    return render_template('reply_to_thread.html', thread=thread)
 
 # --- Routes pour l'authentification ---
 @app.route('/register', methods=['GET', 'POST'])
@@ -100,7 +186,7 @@ def login():
 
         if error is None:
             session.clear()
-            session['user_id'] = user.id # Stocker l'ID de l'utilisateur dans la session
+            session['user_id'] = user.id 
             flash('Connexion réussie!')
             return redirect(url_for('index'))
         else:
@@ -131,7 +217,7 @@ def telescope():
 def photographies():
     return render_template('photographies.html')
 
-# --- Routes pour les détails (peuvent être accessibles sans connexion si vous le souhaitez) ---
+# --- Routes pour les détails 
 @app.route('/appareil/<int:appareil_id>')
 def appareil_detail(appareil_id):
     appareil = AppareilPhoto.query.get_or_404(appareil_id)
@@ -154,7 +240,7 @@ def create_db():
     print('Base de données créée!')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
 
 @app.teardown_appcontext
 def close_connection(exception):

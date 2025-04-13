@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ thread.title }}{% endblock %}
+
+{% block content %}
+    <h2>{{ thread.title }}</h2>
+    <p class="text-muted">Créé par {{ thread.user.username }} le {{ thread.created_at.strftime('%d/%m/%Y à %H:%M') }}</p>
+    <hr>
+    {% for post in posts %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <p class="card-text">{{ post.content|safe }}</p>
+                <p class="card-subtitle text-muted">Posté par {{ post.user.username }} le {{ post.created_at.strftime('%d/%m/%Y à %H:%M') }}</p>
+            </div>
+        </div>
+    {% else %}
+        <p>Aucune réponse dans ce fil de discussion pour le moment.</p>
+    {% endfor %}
+
+    {% if 'user_id' in session %}
+        <h3>Répondre à ce fil de discussion</h3>
+        <form method="post" action="{{ url_for('reply_to_thread', thread_id=thread.id) }}">
+            <div class="mb-3">
+                <label for="content" class="form-label">Contenu de la réponse:</label>
+                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Répondre</button>
+        </form>
+    {% else %}
+        <p><a href="{{ url_for('login') }}">Connectez-vous</a> pour répondre à ce fil de discussion.</p>
+    {% endif %}
+
+    <p><a href="{{ url_for('forum_category', category_id=thread.category_id) }}" class="btn btn-secondary mt-3">Retour à la catégorie</a></p>
+{% endblock %}

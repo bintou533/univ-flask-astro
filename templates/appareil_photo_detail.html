@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ appareil.marque }} {{ appareil.modele }}{% endblock %}
+
+{% block content %}
+    <h2>{{ appareil.marque }} {{ appareil.modele }}</h2>
+    <p><strong>Marque:</strong> {{ appareil.marque }}</p>
+    <p><strong>Modèle:</strong> {{ appareil.modele }}</p>
+    {% if appareil.date_sortie %}
+        <p><strong>Date de sortie:</strong> {{ appareil.date_sortie }}</p>
+    {% endif %}
+    {% if appareil.score %}
+        <p><strong>Score:</strong> {{ appareil.score }}</p>
+    {% endif %}
+    <p><strong>Catégorie:</strong> {{ appareil.categorie }}</p>
+    {% if appareil.resume %}
+        <p><strong>Résumé:</strong></p>
+        <p>{{ appareil.resume|safe }}</p>
+    {% endif %}
+    <a href="{{ url_for('appareils_photo') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+{% endblock %}

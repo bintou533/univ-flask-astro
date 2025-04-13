@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Répondre à {{ thread.title }}{% endblock %}
+
+{% block content %}
+    <h2>Répondre à "{{ thread.title }}"</h2>
+    <form method="post">
+        <div class="mb-3">
+            <label for="content" class="form-label">Votre réponse:</label>
+            <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Poster la réponse</button>
+    </form>
+    <p><a href="{{ url_for('forum_thread', thread_id=thread.id) }}" class="btn btn-secondary mt-3">Annuler</a></p>
+{% endblock %}
